@@ -5,7 +5,7 @@ title: >-
   Auto-AdvER: Disentangling Condition, History, and Commercial Offers in Automotive
   Advertisements
 type: dataset
-# RELEASE-TODO(date-released): add the ISO 8601 date (YYYY-MM-DD) of the first public release
+date-released: 2026-10-22
 authors:
   - family-names: Ventirozos
     given-names: Filippos
