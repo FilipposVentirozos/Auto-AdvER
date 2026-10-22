@@ -31,11 +31,10 @@ authors:
     affiliation: "Manchester Metropolitan University, UK"
     email: m.shardlow@mmu.ac.uk
 repository-code: "https://github.com/FilipposVentirozos/Auto-AdvER"
-# POST-RELEASE-TODO(zenodo-concept-doi): uncomment once the first GitHub Release is archived on Zenodo
-# identifiers:
-#   - type: doi
-#     value: 10.5281/zenodo.NNNNNNN
-#     description: Zenodo concept DOI, resolves to the latest archived release
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23559033
+    description: Zenodo concept DOI, resolves to the latest archived release
 license:
   - MIT
   - CC-BY-4.0

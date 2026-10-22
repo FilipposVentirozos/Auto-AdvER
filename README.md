@@ -1,5 +1,7 @@
 # Auto-AdvER
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23559033.svg)](https://doi.org/10.5281/zenodo.23559033)
+
 Auto-AdvER (**Auto**mobile **Adv**ertisement **E**ntity **R**ecognition) is a named-entity-recognition
 schema and dataset for the free-text portion of UK car advertisements. It introduces three labels —
 `CONDITION`, `HISTORIC` and `SALES_OPTIONS` — that disentangle a vehicle's present state, events from
@@ -266,12 +268,9 @@ the full author list is in the paper):
 
 - **Zenodo — the DOI of record.** Every GitHub *release* of this repository is archived on
   Zenodo, which mints one DOI per version and a *concept DOI* that always resolves to the latest
-  version. Cite the concept DOI when you cite the data: POST-RELEASE-TODO(zenodo-concept-doi).
+  version. Cite the concept DOI when you cite the data: [10.5281/zenodo.23559033](https://doi.org/10.5281/zenodo.23559033).
   The archive is the complete repository at that release — data, predictions, code and
   documentation — with metadata from [`.zenodo.json`](.zenodo.json).
-- **Manchester Metropolitan University e-space.** The university's research repository holds a
-  record for this dataset that points to the same Zenodo DOI rather than a second copy:
-  POST-RELEASE-TODO(e-space-record-url).
 - **The paper** is the reference for the schema and the results; its DOI is added to the
   citation above once the proceedings appear.
 
