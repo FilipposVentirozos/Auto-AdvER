@@ -1,0 +1,11 @@
+[parameters]
+temperature = 0.0
+max_output_tokens = 8192
+#topK = 50
+#topP = 0.9
+#candidate_count = 1
+#logprobs = 1
+#presencePenalty = 0.2
+#frequencyPenalty = 0.1
+#echo = false
+#seed = 1

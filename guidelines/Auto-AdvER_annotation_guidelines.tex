@@ -1,0 +1,199 @@
+% Auto-AdvER Annotation Guidelines — standalone document for the public dataset release.
+%
+% Reproduced from the appendix of the accompanying paper ("Label's Definitions & Identified
+% sub-entities" and "Not Tracked Named Entities"), with light copy-editing for a standalone
+% document and two garbled phrases corrected against the original wording.
+% No author names or company names are included beyond what the paper itself prints (none, in
+% the guideline text itself).
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[british]{babel}
+\usepackage[normalem]{ulem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tcolorbox}
+\usepackage[inline]{enumitem}
+\usepackage[margin=2.7cm]{geometry}
+\usepackage{parskip}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=NavyBlue,citecolor=black]{hyperref}
+\hypersetup{pdftitle={Auto-AdvER Annotation Guidelines}, pdfauthor={}}
+
+\newcommand{\lbl}[1]{\texttt{#1}}
+
+\title{Auto-AdvER Annotation Guidelines}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\noindent
+Below are the annotation guidelines used for the Auto-AdvER study, along with the sub-entities
+identified for each label, followed by the themes that were considered but deliberately excluded
+from annotation.
+
+\section*{Condition --- Current State}
+The \lbl{CONDITION} category covers any information about the vehicle that is current as of the
+date the advertisement was posted.
+
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!75!black, title=Definition]
+The \lbl{CONDITION} label identifies any word or span of words in car advertisements that
+indicate the present material or documented condition of the vehicle, both positive and
+negative. This includes descriptions that reflect the car's current operational performance,
+mechanical state, aesthetic appearance, maintenance status, and legal classifications affecting
+its value or usability.
+\end{tcolorbox}
+
+These include:
+\begin{itemize}
+    \item Tyre condition (i.e.\ trim level or mention of good condition)
+    \item Interior condition (e.g., ``leather like new'')
+    \item Exterior condition (e.g., ``presence of scratches'')
+    \item Mechanical condition (e.g., ``engine noise'', ``gear not locking properly'')
+    \item MoT\footnote{This refers to the Ministry of Transport, which, in a broader context,
+    represents any legal authority responsible for ensuring vehicle safety by enforcing
+    compliance with minimum standards.} due date or recently completed MoT mentioned
+    \item Service due date or recently completed service mentioned
+    \item Current mileage (e.g., ``12k miles'')
+    \item Cat S, C, D or N\footnote{This refers to vehicle categories (such as Cat S, C, D, or
+    N), which, in a broader context, denote classifications used by insurance companies and
+    authorities in the UK to indicate vehicles that have sustained damage and have subsequently
+    been repaired or written off.}
+    \item Registered, pre-registered, non-registered, demonstrator\footnote{This refers to
+    vehicle registration statuses (such as registered, pre-registered, non-registered, or
+    demonstrator), which, in a broader context, indicate whether a vehicle has been officially
+    recorded with authorities, previously assigned registration by a dealership, remains
+    unregistered, or has been used primarily for demonstration purposes.}
+\end{itemize}
+
+\paragraph{Annotation span length and methodology}
+\begin{enumerate}
+\item A condition span is typically characterised by the noun of a part of a vehicle (e.g.,
+``tyre thread'') and an attribute that links to it (e.g., ``low''). The whole phrase is annotated
+(e.g., ``tyre thread is low''), and anything else is omitted.
+\item Opinion-based statements are disregarded, such as ``low mileage'', since it denotes an
+opinion that the car is of low mileage for its age; instead ``80,000 mileage'' is labelled, since
+it is presented as a fact. Likewise, ``amazing condition'' does not add enough valuable
+information to the advert, being opinion, whereas ``clean paintwork'' is specific and adds
+value, so the second is labelled but not the first.
+\item Span words referring to the state of the vehicle at the time the advert was posted are
+labelled, e.g., ``6 month MoT'', ``80,000 miles''; references to doing extra miles after the
+advert was posted can safely be ignored.
+\end{enumerate}
+
+\section*{Historic --- Events in the Past}
+The \lbl{HISTORIC} attribute covers events that occurred before the car advertisement was posted.
+
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!75!black, title=Definition]
+The \lbl{HISTORIC} label identifies any word or span of words in car advertisements that present
+events or details from the vehicle's past that have affected its mechanical condition or
+bodywork.
+\end{tcolorbox}
+
+These include:
+\begin{itemize}
+    \item Mention of past accidents (e.g., ``3 years back I scratched the front side'')
+    \item Number of owners
+        \begin{itemize}
+        \item Solely, without mentioning ``from new''. E.g., ``3 owners \sout{from new}''
+        \end{itemize}
+    \item Past type of usage
+    \begin{itemize}
+        \item Any mention of past usage that could affect its condition, either positive or
+        negative. E.g., ``smoke free'', ``motorway mileage'', ``stored in locked garage''
+    \end{itemize}
+    \item Component change (e.g., ``Cambelt changed a year ago'', ``New brake calipers'', ``new
+    tyres, brake discs'') and tuning (e.g., ``re-mapping'')
+    \item MoT advisories, or no advisories, mentioned
+    \item HPI\footnote{This refers to Hire Purchase Investigation, which, in a broader context,
+    denotes a vehicle history check commonly used in the UK to verify whether a vehicle has
+    outstanding finance, has been reported stolen, previously written off, or has other hidden
+    issues.} \underline{is} clear (as opposed to only offering an HPI report as a Sales Option,
+    see below)
+    \item Service history done in the past, including stamps (e.g., 8 stamps), dates (e.g.,
+    ``02/203, 01/2024'')\footnote{Reproduced verbatim from the source guidelines; ambiguous
+    between 02/2003 and 02/2023.} or mileages (e.g., ``@ 30k, @40k, @49k'') and where (e.g.,
+    ``BMW'')
+\end{itemize}
+
+\paragraph{Annotation span length and methodology}
+\begin{enumerate}
+\item The annotation span under Historic can be considered the most elaborate of the three
+classes. It refers to events that happened in the past (e.g., ``Replaced clutch'', ``3 owners'',
+``Last service was done 3,000 miles ago'', ``primarily done on the motorway'').
+\item Should there be a mention of damage and subsequently a relevant mention of component
+change, these are two separate spans. Each bullet point above is treated as a separate span.
+\item If a span mentions a component change that still reflects the present, it is labelled as
+Historic (e.g., ``2 new front tyres fitted last May'').
+\end{enumerate}
+
+\section*{Sales Options}
+\lbl{SALES\_OPTIONS} covers aspects related to the selling process itself.
+
+\begin{tcolorbox}[colback=gray!5!white, colframe=gray!75!black, title=Definition]
+The \lbl{SALES\_OPTIONS} label refers to any word or span of words that indicates something
+tangible or a service offered during or after the sale, apart from the car itself, that enhances
+the sale proposition.
+\end{tcolorbox}
+
+These include:
+\begin{itemize}
+    \item Part exchange offers
+    \item Number of keys
+    \item Delivery \& delivery options
+    \item Extended opening times (i.e.\ unusual times, late night or weekends)
+    \item Warranty available
+    \item Financing options
+    \item Sale of the car's licence plate (or not)
+    \item Availability of additional photos from past accidents
+    \item Offering a test drive
+    \item Price negotiability
+    \item Any documentation, e.g.:
+        \begin{itemize}
+            \item Full service history logbook (FSH)
+            \item Providing MoT papers
+        \end{itemize}
+    \item Valeting / cleaning
+    \item Any other kind of service that could be considered an advantage over other sellers
+\end{itemize}
+
+\paragraph{Annotation span length and methodology}
+\begin{enumerate}
+\item The noun part of the sale, or any adjective specifying it, is labelled, disregarding any
+conditions attached to it. For instance, ``2 year warranty \sout{when financed with Volvo
+Services, Terms and Conditions apply}''.
+\item Spans that add value to the advert, according to annotator judgment, are labelled. If
+something resembles a Sales Option but adds no value compared with the rest of the advert, it is
+disregarded; contact details and location are instances of this.
+\end{enumerate}
+
+\section*{Not Tracked Entities}
+The following recurrent themes were identified during annotation but deliberately excluded, with
+the reasons recorded:
+\begin{itemize}
+    \item \textbf{Logistical costs}: tax, insurance, ULEZ\footnote{The acronym refers to the
+    Ultra Low Emission Zone charge in London, where more polluting vehicles are charged
+    accordingly.} compliance, and how long a full tank lasts --- redundant, since these are
+    calculable more accurately from the car's specification, purchase time, location and type
+    of use.
+    \item \textbf{Personal sentiments}: statements of emotional distress about selling the car
+    (e.g., ``it breaks my heart to see this car go'') --- omitted as they add nothing to an
+    objective, quantifiable metric.
+    \item \textbf{Reason for selling}: e.g., buying a newer vehicle, downsizing --- omitted for
+    the same reason.
+    \item \textbf{Car identifiables}: brand, model, year, colour and engine size re-stated in
+    the free text --- omitted as redundant with the advert header, where this information
+    already appears.
+    \item \textbf{Invitation for communication \& location}: references to contacting the
+    seller or to where the vehicle is located --- not labelled.
+    \item \textbf{Optional \& standard features}: of clear interest, since features can change a
+    vehicle's price evaluation, but what counts as a feature differs from vehicle to vehicle and
+    manufacturer to manufacturer. A separate piece of work targets feature annotation against a
+    per-vehicle catalogue, cast as a contextual entity-recognition problem.
+    \item \textbf{Sales pitch}: elaborate descriptions, more common among traders than
+    individual sellers, that emphasise a vehicle's appeal without substantive factual content.
+\end{itemize}
+
+\end{document}

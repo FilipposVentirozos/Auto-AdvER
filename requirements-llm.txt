@@ -1,0 +1,44 @@
+# Auto-AdvER — optional LLM / prompting stack (llm/icl.py, llm/generate.py, llm/predict.py)
+#
+# Not required to reproduce the paper's tables (src/score.py re-scores the stored predictions
+# in predictions/ and is stdlib-only; see requirements.txt). Install this file only to re-run
+# generation against GPT-4o, Llama or Qwen (Gemini's generation code is lost — see README
+# "What cannot be reproduced" — so there is nothing to install for it here).
+#
+# Versions below were resolved on 2026-09-08 with:
+#   uv pip compile llm.in --python-version 3.12 --python-platform x86_64-unknown-linux-gnu \
+#     --constraint <freeze of requirements.txt's installed venv>
+# against llm.in = {openai>=1,<2, transformers, torch==2.14.0, accelerate, huggingface_hub,
+# pytextspan, toml}. This is dependency-resolution only ("would install"); none of these
+# packages were installed/imported here EXCEPT torch/triton/the nvidia-* CUDA runtime
+# libraries, which were already installed and smoke-tested for en_core_web_trf (see
+# requirements.txt) — those three lines are [confirmed], everything else is [resolved, untested].
+#
+# Two earlier version estimates for this stack were stale by the time of this resolution:
+# transformers and huggingface_hub have each since had a major version bump on PyPI
+# (transformers is now a 5.x release line, huggingface_hub a 1.x line) — use the resolved
+# versions below, not older guesses found elsewhere.
+#
+# Import-name note: the paper's code imports `textspan`, but as of this date that name has been
+# removed from PyPI (returns 404) — the installable package is `pytextspan` (same import name,
+# confirmed via the cached wheel pytextspan-0.5.7). Pin pytextspan, not textspan.
+
+openai==1.109.1              # [resolved, untested] — openai>=1,<2 as specified
+transformers==5.16.1         # [resolved, untested] — an earlier 4.57.* estimate is stale
+torch==2.14.0                # [confirmed] — already installed for en_core_web_trf, see requirements.txt
+accelerate==1.14.0           # [resolved, untested]
+huggingface_hub==1.30.0      # [resolved, untested] — an earlier >=0.25 estimate is stale
+pytextspan==0.5.7            # [resolved, untested] — PyPI distribution name for the `textspan` import
+toml==0.10.2                 # [resolved, untested]
+
+# Transitive CUDA runtime stack pulled in by torch==2.14.0 (already installed, see
+# requirements.txt's optional en_core_web_trf block for the on-disk size, ~5.6 GB total):
+# triton==3.8.0, nvidia-cublas, nvidia-cuda-{cupti,nvrtc,runtime}, nvidia-cudnn-cu13,
+# nvidia-cufft, nvidia-cufile, nvidia-curand, nvidia-cusolver, nvidia-cusparse(-lt),
+# nvidia-nccl-cu13, nvidia-nvjitlink, nvidia-nvshmem-cu13, nvidia-nvtx, cuda-bindings,
+# cuda-pathfinder, cuda-toolkit — do not pin separately; they follow from torch==2.14.0.
+
+# Inferred/optional, NOT included above: google-cloud-aiplatform / vertexai — only a
+# commented-out vertexai.init() call and a config file's {project, location} schema were found;
+# no active Vertex AI import anywhere in the source, and the Gemini generation code itself is
+# lost. Add google-cloud-aiplatform>=1.60 yourself if you recover it.

@@ -1,0 +1,168 @@
+# Model versions and decoding settings for the Auto-AdvER baselines.
+#
+# This file is documentation, not configuration: nothing reads it at runtime.
+# It records what each reported run used, so that the stored predictions in
+# `predictions/` can be attributed to a specific model and setting. Values
+# marked `# unknown` are not recorded anywhere in the source repositories or the
+# project notes; do not infer them.
+#
+# `n_icl` is the number of in-context example documents. The paper says "random
+# 100 samples from the training data" for all LLMs. The code never sampled: it
+# took documents in file order, and only the local (Hugging Face) path applied
+# a cap. See src/llm/icl.py.
+
+[gpt-4o]
+provider = "openai"
+model = "gpt-4o-2024-11-20"          # the paper's version; the code used the
+                                     # floating alias "gpt-4o" and the served
+                                     # snapshot was never recorded
+temperature = 0.0
+logprobs = true
+top_logprobs = 0
+max_tokens = "default"               # not set by the code
+n_icl = 426                          # UNCAPPED in every commit: the whole train
+                                     # fold. Contradicts the paper's "100".
+icl_selection = "file order"
+seed = "none"                        # temperature 0 only; no seed parameter used
+predictions = "predictions/gpt-4o/"
+run_date = "2024-11-30"
+
+["gemini-1.5-flash"]
+provider = "vertex-ai"
+model = "gemini-1.5-flash-002"
+temperature = 0.0
+max_output_tokens = 8192
+top_k = "unset"                      # commented out in the parameter file
+top_p = "unset"                      # commented out
+candidate_count = "unset"            # commented out
+seed = "unset"                       # commented out
+n_icl = "# unknown"                  # the generation code is lost
+icl_selection = "# unknown"
+predictions = "predictions/gemini-1.5-flash/"
+run_date = "2024-12-01"
+note = """Generation code lost: absent from the working tree and from all 21
+commits of the source repository. Only configs/gemini-1.5-flash-002.toml
+survives. Stored predictions only; src/llm/generate.py's `vertex` backend raises
+NotImplementedError."""
+
+["llama-3.1-70b"]
+provider = "huggingface-transformers"
+model = "meta-llama/Meta-Llama-3.1-70B-Instruct"
+temperature = 0.0001                 # nearly greedy, but do_sample=True
+do_sample = true
+max_new_tokens = 8192
+torch_dtype = "bfloat16"
+device_map = "auto"
+n_icl = 100                          # chat_history[:202] = 2 framing turns + 100 pairs
+icl_selection = "file order"
+seed = "none"                        # no set_seed in the original; --seed added
+                                     # in this release
+predictions = "predictions/llama-3.1-70b/"
+
+["qwen2.5-72b"]
+provider = "huggingface-transformers"
+model = "Qwen/Qwen2.5-72B-Instruct"
+temperature = 0.0001
+do_sample = true
+max_new_tokens = 8192
+torch_dtype = "bfloat16"
+device_map = "auto"
+n_icl = 100
+icl_selection = "file order"
+seed = "none"
+predictions = "predictions/qwen2.5-72b/"
+
+# ---------------------------------------------------------------------------
+# Encoders. Trained with Hugging Face run_ner.py; see src/encoders/README.md for
+# the full recorded/unknown split.
+# ---------------------------------------------------------------------------
+
+[deberta-v3-base]
+provider = "huggingface-transformers"
+model = "microsoft/deberta-v3-base"
+transformers = "4.46.0"              # inferred from the run_ner.py checkout
+num_train_epochs = 30
+per_device_train_batch_size = 16
+learning_rate = 1e-5
+warmup_steps = 50
+metric_for_best_model = "eval_loss"
+seed = "# unknown"
+max_seq_length = "# unknown"
+predictions = "predictions/deberta-v3-base/"
+
+[bert-base]
+provider = "huggingface-transformers"
+model = "google-bert/bert-base-cased"  # per the paper's appendix; every recorded
+                                       # command line used bert-base-uncased
+transformers = "4.46.0"
+num_train_epochs = 30                  # the paper applies one listing to both
+                                       # encoders; no BERT-specific record exists
+per_device_train_batch_size = 16
+learning_rate = 1e-5
+warmup_steps = 50
+metric_for_best_model = "eval_loss"
+seed = "# unknown"
+max_seq_length = "# unknown"
+predictions = "predictions/bert-base/"
+
+[bert-large]
+provider = "huggingface-transformers"
+model = "google-bert/bert-large-uncased"  # every recorded command line used an
+                                          # uncased checkpoint; the paper's prose
+                                          # describes cased BERT. Unresolved.
+transformers = "# unknown"
+num_train_epochs = "5-20"              # the only settings on record for the
+per_device_train_batch_size = 2        # large models; they differ from the
+seed = 42                              # encoder listing in the paper
+learning_rate = "# unknown"
+warmup_steps = "# unknown"
+metric_for_best_model = "# unknown"
+max_seq_length = "# unknown"
+predictions = "predictions/bert-large/"
+note = "Trained, then dropped from the paper's results table."
+
+[deberta-v3-large]
+provider = "huggingface-transformers"
+model = "microsoft/deberta-v3-large"
+transformers = "# unknown"
+num_train_epochs = "5-20"              # as for bert-large: batch size, epoch
+per_device_train_batch_size = 2        # range and seed are the only records
+seed = 42
+learning_rate = "# unknown"
+warmup_steps = "# unknown"
+metric_for_best_model = "# unknown"
+max_seq_length = "# unknown"
+predictions = "predictions/deberta-v3-large/"
+note = "Trained, then dropped from the paper's results table."
+
+# ---------------------------------------------------------------------------
+# CRF. Four feature configurations; see src/crf/README.md.
+# ---------------------------------------------------------------------------
+
+[crf]
+spacy_model = "en_core_web_trf"
+spacy_model_version = "# unknown"    # the only version record was a macOS venv
+algorithm = "lbfgs"
+max_iterations = 100
+all_possible_transitions = true
+search = "RandomizedSearchCV, n_iter = 100, n_jobs = 1"
+c1_prior = "expon(scale = 0.5)"
+c2_prior = "expon(scale = 0.05)"
+scorer = "weighted flat F1 over the non-O labels"
+cv = "PredefinedSplit: train = -1, val = 0"
+refit = "train + val"
+c1 = "# unknown"                     # printed, never saved; no random_state
+c2 = "# unknown"
+seed = "none"                        # --seed added in this release
+configs = ["all", "pos", "wo_pos", "2_3"]
+predictions = ["predictions/crf/", "predictions/crf-pos/",
+               "predictions/crf-wo-pos/", "predictions/crf-2-3/"]
+
+[crf-top-features]
+# The appendix table came from a DIFFERENT model from the results table.
+spacy_model = "en_core_web_sm"
+c1 = 0.1
+c2 = 0.1
+fold = "f1 only, no validation split"
+features = "config 'all', extracted from ' '.join(tokens)"
+script = "src/crf/top_features.py (these are its defaults)"

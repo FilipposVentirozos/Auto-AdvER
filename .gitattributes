@@ -1,0 +1,7 @@
+# The corpus, the folds, the agreement subset and the model predictions are stored
+# with Git LFS.  Install it before cloning (`git lfs install`), or run `git lfs pull`
+# in an existing clone, so that these files arrive as JSON rather than as pointer stubs.
+data/**/*.jsonl filter=lfs diff=lfs merge=lfs -text
+data/**/*.json filter=lfs diff=lfs merge=lfs -text
+predictions/**/*.jsonl filter=lfs diff=lfs merge=lfs -text
+predictions/**/*.json filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,42 @@
+# Auto-AdvER — core requirements
+#
+# The paper's scorer (src/score.py) is stdlib-only (collections, json, os, pprint, sys,
+# warnings, copy, itertools) — no install needed to reproduce the results tables from the
+# stored predictions in predictions/.
+#
+# This file pins the CRF baseline stack only (the paper's best model). All versions below
+# were installed and smoke-tested on Linux x86_64 / Python 3.12.11 on 2026-09-08
+# (`uv venv --python 3.12.11`); they match the numpy 2 / spaCy 3.8 line used for the original
+# experiments. An older numpy 1 / spaCy 3.7 environment also existed during development and is
+# not reproduced here.
+#
+# Install:
+#   uv venv --python 3.12.11 .venv
+#   uv pip install -r requirements.txt
+
+scikit-learn==1.8.0
+sklearn-crfsuite==0.5.0
+python-crfsuite==0.9.12
+scipy==1.17.1
+numpy==2.4.3
+spacy==3.8.11
+
+# click is spaCy's CLI dependency (via typer/weasel) but, as of typer 0.27.2 / typer-slim
+# 0.24.0 (Sep 2026), typer's own declared metadata no longer requires click, so `import spacy`
+# fails with `ModuleNotFoundError: No module named 'click'` unless it is pinned directly here.
+# Confirmed on this install; pin explicitly rather than relying on transitive resolution.
+click==8.5.0
+
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+
+# --- optional: the transformer-based spaCy pipeline used for the searched CRF configuration
+# behind the results table (see src/crf/train_predict.py --config all, en_core_web_trf) ---
+# en_core_web_trf pulls torch + a full CUDA runtime stack (~5.6 GB on disk: torch 1.1 GB,
+# nvidia-* CUDA libraries 3.2 GB, triton 894 MB, the trf model weights 478 MB). Installed and
+# smoke-tested here (torch==2.14.0+cu130). PyPI's default Linux x86_64 torch wheel is the CUDA
+# build regardless of the host's actual hardware, so this ~5.6 GB pull happens whether or not a
+# GPU is present. Uncomment only if you need to reproduce the trf-backed CRF configuration; the
+# sm-backed configuration above covers the "top features" appendix and most of the CRF
+# baselines.
+# torch==2.14.0
+# en_core_web_trf @ https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.8.0/en_core_web_trf-3.8.0-py3-none-any.whl

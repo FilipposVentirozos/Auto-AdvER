@@ -1,0 +1,29 @@
+{
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "language": "eng",
+  "title": "Auto-AdvER: annotated car-advertisement corpus, guidelines, model predictions and code",
+  "description": "<p>Auto-AdvER is a span-labelling schema and corpus for the textual car-advertisement domain: 605 UK car adverts, half written by motor traders and half by private sellers, annotated with three labels, <em>Condition</em>, <em>Historic</em> and <em>Sales Options</em>. This record archives a tagged release of the GitHub repository. It contains the corpus with character-offset spans and a word-level IOB2 view, the three cross-validation folds used in the paper, the inter-annotator-agreement study with three pseudonymised annotators, the annotation guidelines, the stored predictions of every model configuration reported in the paper together with the scorer that regenerates the paper's tables from them.</p><p>Licences: the data (<code>data/</code>), the stored predictions (<code>predictions/</code>) and the annotation guidelines (<code>guidelines/</code>) are released under CC BY 4.0; the code (<code>src/</code>, <code>tests/</code>, <code>results/make_tables.py</code>, <code>configs/</code>) under the MIT Licence. The repository README gives the schema, the provenance and anonymisation statement, the notes for reproduction and the citation.</p><p>Developed with the Autotrader Research Group, Autotrader UK.</p>",
+  "notes": "Cite the paper for the schema and the results, and this record's concept DOI for the data. The concept DOI always resolves to the latest archived release.",
+  "creators": [
+    {"name": "Ventirozos, Filippos", "affiliation": "Manchester Metropolitan University; Autotrader Research Group, Autotrader UK"},
+    {"name": "Nteka, Ioanna", "affiliation": "Autotrader Research Group, Autotrader UK"},
+    {"name": "Nandy, Tania", "affiliation": "Autotrader Research Group, Autotrader UK"},
+    {"name": "Baca, Jozef", "affiliation": "Autotrader Research Group, Autotrader UK"},
+    {"name": "Roadhouse, Charlie", "affiliation": "Manchester Metropolitan University"},
+    {"name": "Appleby, Peter", "affiliation": "Autotrader Research Group, Autotrader UK"},
+    {"name": "Shardlow, Matthew", "affiliation": "Manchester Metropolitan University"}
+  ],
+  "keywords": [
+    "span labelling",
+    "named entity recognition",
+    "information extraction",
+    "automotive advertisements",
+    "annotated corpus",
+    "inter-annotator agreement",
+    "conditional random fields",
+    "large language models",
+    "English"
+  ]
+}
